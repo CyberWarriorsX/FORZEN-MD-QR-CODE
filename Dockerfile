@@ -1,5 +1,5 @@
 FROM quay.io/xelectra/xasena:latest
-RUN git clone https://github.com/CyberWarriorsX/X-asena-QR /root/CyberWarriorsX
+RUN git clone https://github.com/CyberWarriorsX/FORZEN-MD-QR-CODE /root/CyberWarriorsX
 WORKDIR /root/CyberWarriorsX/
 RUN npm install npm@latest
 RUN yarn install --network-concurrency 1
