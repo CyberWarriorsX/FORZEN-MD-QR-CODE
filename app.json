@@ -1,7 +1,7 @@
 { 
-   "name": "Blue-Lion-QR ", 
+   "name": "FORZEN-MD QR", 
    "description": "whatsapp md bot build with nodejs", 
-   "repository": "https://github.com/nipuna15/Blue-Lion-QR", 
+   "repository": "https://github.com/CyberWarriorsX/FORZEN-MD-QR-CODE", 
    "logo": "https://raw.githubusercontent.com/nipuna15/nipuna15/main/IMG-20230613-WA0008.jpg", 
    "keywords": ["nodejs", "bot", "whatsapp bot", "whatsapp automation", "multi device"], 
    "buildpacks": [ 
