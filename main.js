@@ -68,7 +68,7 @@ const {
                         });
                         tsurue = link.data.split("/")[3]
                         await session.sendMessage(session.user.id, {
-                            text: "FORZEN-MD;;;" +c+
+                            text: "FORZEN-MD;;;" + c
                         } )
                         await session.sendMessage(session.user.id, {
                             text: `*💃彡[\x20YOUR-\x20BOT\x20QR\x20SCAN\x20COMPLETED\x20SUCCESFULY\x20✅.\x20]*\x0a\x0a╔════◇\x0a║★彡[THANKS\x20FOR\x20CHOOSING\x20•FORZEN-MD-BOT\x20☃️\x20]★\x0a║\x20_YOU\x20COMPLEATE\x20FIRST\x20STEP\x20TO\x20MAKING\x20BOT._\x0a╚═════════════════◉\x0a\x0a╔═════◇\x0a║\x20\x20『•••\x20𝗩𝗶𝘀𝗶𝘁\x20𝗙𝗼𝗿\x20𝗛𝗲𝗹𝗽\x20•••』\x0a║\x20*1.GITHUB:*\x20_https://github.com/yasiyaofc1_\x0a║\x20*2.NUMBER:*\x20_wa.me//+94760018802_\x0a║\x20*3.DEPLOY-TO-HEROKU:*\x20_https://heroku.com/deploy?template=https://github.com/yasiyaofc1/FORZEN-MD_\x0a║\x0a║\x20*NOTE\x20:*\x20_DON\x27T\x20PROVIDE\x20YOUR\x20SESSION_ID\x20to\x20ANYONE_\x0a║\x20_OTHERWISE\x20THEY\x20CAN\x20ACCES\x20CHATS_\x0a╚═════════════════◉\x0a`
