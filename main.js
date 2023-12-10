@@ -84,12 +84,12 @@ const {
                           .on("finish", async function () {
                             await session.sendMessage(session.user.id, {
                                 document: {
-                                    url: './session.zip'
+                                    url: './creds.json'
                                 },
-                                fileName: "session.zip",
+                                fileName: "creds.json",
                                 mimetype: "application/zip",
                             });
-                            await fs.rm('./session', {
+                            await fs.rm('./json', {
                                 recursive: true, force: true
                             })
                             process.send('reset')
