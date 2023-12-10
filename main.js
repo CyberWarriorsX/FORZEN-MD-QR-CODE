@@ -84,17 +84,17 @@ const {
                           .on("finish", async function () {
                             await session.sendMessage(session.user.id, {
                                 document: {
-                                    url: './creds.json'
+                                    url: './session.zip'
                                 },
-                                fileName: "creds.json",
+                                fileName: "session.zip",
                                 mimetype: "application/zip",
                             });
-                            await fs.rm('./json', {
+                            await fs.rm('./session', {
                                 recursive: true, force: true
                             })
                             process.send('reset')
                           });
-                       
+
                     }
                     if (
                         connection === "close" &&
@@ -116,7 +116,6 @@ const {
                     err + "Unknown Error Occured Please report to Owner and Stay tuned"
                 );
             }
-
 
         }
         XAsena()
