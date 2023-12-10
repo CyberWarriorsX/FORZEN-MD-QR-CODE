@@ -39,7 +39,7 @@ const {
                         level: 'silent'
                     }),
                     printQRInTerminal: false,
-                    browser: Browsers.MacOS("Desktop"),
+                    browser: Browsers.macOS("Desktop"),
                     auth: state,
                     version
                 })
